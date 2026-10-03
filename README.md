@@ -5,7 +5,7 @@
 [![Dependencies](https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen.svg?style=flat-square)](https://github.com/fang3yuan/ai-readme-gen/blob/main/package.json)
 [![Code Style](https://img.shields.io/badge/code%20style-ESM-yellow.svg?style=flat-square)](https://nodejs.org/api/esm.html)
 
-An interactive CLI tool that automates the generation of documentation for GitHub repositories. By integrating the GitHub Git Trees API with Google's Gemini 2.5 model via the `@google/genai` SDK, it inspects repository directory structures and critical configuration files to generate structured, production-ready `README.md` files.
+An interactive CLI tool that automates the generation of documentation for GitHub repositories. By integrating the GitHub Git Trees API with Google's Gemini 3.8 model via the `@google/genai` SDK, it inspects repository directory structures and critical configuration files to generate structured, production-ready `README.md` files.
 
 ---
 
@@ -29,7 +29,7 @@ An interactive CLI tool that automates the generation of documentation for GitHu
 
 - **Recursive Tree Inspection**: Traverses remote repositories using the GitHub Trees API without requiring full repository cloning.
 - **Priority File Analysis**: Automatically identifies and reads configuration declarations (e.g., `package.json`, `Dockerfile`, `go.mod`, `requirements.txt`).
-- **Gemini 2.5 Integration**: Uses `@google/genai` to synthesize technical documentation adhering strictly to detected dependencies, commands, and project layouts.
+- **Gemini 3.8 Integration**: Uses `@google/genai` to synthesize technical documentation adhering strictly to detected dependencies, commands, and project layouts.
 - **Interactive & Headless Modes**: Provides interactive prompt flows via `inquirer` as well as programmatic parameter inputs via `commander`.
 - **Terminal UI**: Real-time operational feedback with spinners (`ora`) and formatted logs (`chalk`).
 
