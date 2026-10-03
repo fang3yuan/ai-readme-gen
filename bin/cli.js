@@ -20,7 +20,9 @@ const program = new Command();
 
 program
   .name('readme-gen')
-  .description('Interactive CLI to generate professional GitHub README.md using Gemini 3.8 Flash')
+  .description(
+    'Interactive CLI to generate professional GitHub README.md using Gemini 3.8 Flash'
+  )
   .version('1.0.0');
 
 // أمر إعداد الـ API Key مرة واحدة
@@ -93,9 +95,14 @@ program
         name: 'repoUrl',
         message:
           'Enter GitHub Repository URL (e.g., https://github.com/owner/repo):',
-        validate: (input) =>
-          input.startsWith('https://github.com/') ||
-          'Must be a valid GitHub URL.'
+        validate: (input) => {
+          const url = input.trim().replace(/\.git\/?$/, '');
+
+          return (
+            /^https:\/\/github\.com\/[^/]+\/[^/]+\/?$/.test(url) ||
+            'Must be a valid GitHub repository URL.'
+          );
+        }
       },
       {
         type: 'input',
@@ -105,12 +112,22 @@ program
       }
     ]);
 
+    // تنظيف رابط المستودع:
+    // https://github.com/owner/repo.git
+    // ⬇
+    // https://github.com/owner/repo
+    //
+    // والرابط الذي لا يحتوي .git يبقى كما هو.
+    const repoUrl = userInputs.repoUrl
+      .trim()
+      .replace(/\.git\/?$/, '');
+
     const spinner = ora(
       'Accessing GitHub API & parsing repository metadata...'
     ).start();
 
     try {
-      const metadata = await getRepoMetadata(userInputs.repoUrl);
+      const metadata = await getRepoMetadata(repoUrl);
 
       spinner.text =
         `Fetching complete file tree via GitHub Trees API for ` +
@@ -163,7 +180,7 @@ program
 
       // تجهيز الحمولة للـ Prompt
       const promptPayload = `
-[Target Repo URL]: ${userInputs.repoUrl}
+[Target Repo URL]: ${repoUrl}
 [Owner]: ${metadata.owner}
 [Repo Name]: ${metadata.repo}
 [Branch]: ${metadata.defaultBranch}
